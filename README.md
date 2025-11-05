@@ -12,6 +12,13 @@ Companion combat AI for Minecraft with an in-game neural network visualizer.
    - `runServer` for a dedicated server session (or execute `scripts/run-server.sh`).
 5. Prefer `make build` (or `make run-client`) to wrap the Gradle tasks with the correct `JAVA_HOME`; `make install` builds and copies the freshest `neuralfighter-*.jar` into your Minecraft `mods/` folder.
 
+## Neural Network Sandbox
+
+- `neuralfighter:neural_node` – block entity that pulses activation by layer (0-7). Breaks and drops itself.
+- `neuralfighter:neural_connection` – automatically links the two nearest nodes when placed and animates a weight pulse between them.
+- On first login the mod auto-spawns a two-node demo network and seeds your inventory with both block types.
+- Use `/neuralfighter demo_graph` to re-scan nearby node/connection blocks and re-enable the visualization after you move things around.
+
 See `docs/dev-flow.md` for additional workflow notes and next steps.
 
 ## License

@@ -16,7 +16,12 @@
 - Edit Java/Kotlin sources under `src/main/java` and assets under `src/main/resources`.
 - Keep gameplay logic server-side (`main` source set) and visual-only code in the `client` source set.
 - Use `./gradlew runClient` for rapid iteration; `./gradlew build` before committing or sharing artifacts.
-- If mappings seem stale, rerun `./gradlew genSources` and reload VS Code.
+- If mappings seem stale, rerun `./gradlew genSources` and reload VS Code.
+
+### Visualization Blocks
+- `neural_node` blocks animate activation by layer index (0-7). The block entity recomputes a sine wave so you can layer them in columns.
+- `neural_connection` blocks look for the two closest nodes within eight blocks and stream particles between them with sign-coded weights.
+- `/neuralfighter demo_graph` refreshes registration after you move or clone blocks.
 
 ## Roadmap toward the AI Companion
 1. **Rule-Based Fighter**

@@ -1,8 +1,9 @@
 package com.fuchengwarren.neuralfighter;
 
+import com.fuchengwarren.neuralfighter.content.NeuralConnectionBlockEntity;
 import com.fuchengwarren.neuralfighter.content.RegistryObjects;
 import com.fuchengwarren.neuralfighter.event.PlayerJoinEventHandler;
-import com.fuchengwarren.neuralfighter.visualization.NeuralDisplayManager;
+import com.fuchengwarren.neuralfighter.visualization.NeuralNetworkVisualizationManager;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.util.math.BlockPos;
@@ -24,7 +25,7 @@ public class NeuralFighterMod implements ModInitializer {
 		RegistryObjects.register();
 		registerCommands();
 		PlayerJoinEventHandler.register();
-		NeuralDisplayManager.init();
+		NeuralNetworkVisualizationManager.init();
 		LOGGER.info("Neural Fighter mod initialized.");
 	}
 
@@ -36,18 +37,22 @@ public class NeuralFighterMod implements ModInitializer {
                         var source = ctx.getSource();
                         World w = source.getWorld();
                         BlockPos ppos = BlockPos.ofFloored(source.getPosition());
-                        BlockPos target = null;
-                        for (BlockPos bp : BlockPos.iterateOutwards(ppos, 8, 8, 8)) {
-                            if (w.getBlockState(bp).isOf(RegistryObjects.NEURAL_DISPLAY_BLOCK)) {
-                                target = bp.toImmutable();
-                                break;
+                        if (w instanceof net.minecraft.server.world.ServerWorld serverWorld) {
+                            int registeredCount = 0;
+                            for (BlockPos bp : BlockPos.iterateOutwards(ppos, 10, 10, 10)) {
+                                if (w.getBlockState(bp).isOf(RegistryObjects.NEURAL_NODE_BLOCK)) {
+                                    NeuralNetworkVisualizationManager.registerNode(serverWorld, bp.toImmutable());
+                                    registeredCount++;
+                                } else if (w.getBlockState(bp).isOf(RegistryObjects.NEURAL_CONNECTION_BLOCK)) {
+                                    NeuralNetworkVisualizationManager.registerConnection(serverWorld, bp.toImmutable());
+                                    if (w.getBlockEntity(bp) instanceof NeuralConnectionBlockEntity connection) {
+                                        connection.initializeLinks(serverWorld);
+                                    }
+                                    registeredCount++;
+                                }
                             }
-                        }
-                        if (target != null && w instanceof net.minecraft.server.world.ServerWorld serverWorld) {
-                            NeuralDisplayManager.registerDisplay(serverWorld, target);
-                            ctx.getSource().sendFeedback(() -> net.minecraft.text.Text.literal("Activated Neural Display visualization."), false);
-                        } else {
-                            ctx.getSource().sendFeedback(() -> net.minecraft.text.Text.literal("Place a Neural Display nearby first."), false);
+                            final int total = registeredCount;
+                            ctx.getSource().sendFeedback(() -> net.minecraft.text.Text.literal("Registered " + total + " neural visualization blocks."), false);
                         }
                         return 1;
                     }))

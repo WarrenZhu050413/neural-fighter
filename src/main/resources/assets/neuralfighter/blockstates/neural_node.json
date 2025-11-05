@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "layer=0": { "model": "neuralfighter:block/neural_node_layer0" },
+    "layer=1": { "model": "neuralfighter:block/neural_node_layer1" },
+    "layer=2": { "model": "neuralfighter:block/neural_node_layer2" },
+    "layer=3": { "model": "neuralfighter:block/neural_node_layer3" },
+    "layer=4": { "model": "neuralfighter:block/neural_node_layer4" },
+    "layer=5": { "model": "neuralfighter:block/neural_node_layer5" },
+    "layer=6": { "model": "neuralfighter:block/neural_node_layer6" },
+    "layer=7": { "model": "neuralfighter:block/neural_node_layer7" }
+  }
+}
