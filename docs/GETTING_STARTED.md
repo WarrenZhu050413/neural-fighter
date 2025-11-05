@@ -1,29 +1,23 @@
-# Getting Started with Neural Fighter Mod
+# Neural Fighter Mod
 
-Hey! This is a simple guide to help you understand the codebase and start contributing.
+I built this with Fabric because it is a lightweight modding framework that makes it easy to prototype. The entire project structure was generated from Fabric's official generator, so it follows standard conventions.
 
-## What is This?
-
-This is a **Minecraft mod** built with **Fabric** (a lightweight modding framework). The entire project structure was generated from Fabric's official generator, so it follows standard conventions.
-
----
-
-## Quick Start (Just Run It!)
+To run, do this:
 
 ```bash
 make build          # Build the mod
 make run-client     # Start Minecraft with the mod loaded
 ```
 
-When Minecraft opens, you'll need to **enable Fabric mods** in the main menu. Then create a new world, and you'll automatically get some neural blocks in your inventory to test with!
+When Minecraft opens, you'll need to enable Fabric mods in the main menu. Do this by clicking "Single Player", then "Create New World", then "More", then "Data Packs", and then select "Fabric Mods" on the right column. At lastcreate the new world. Neural blocks and a "fighter egg" spawner item will be automatically in one's inventory.
 
----
+Now some things I learned about the code structure:
 
-## Code Structure (The Simple Version)
+## Code Structure
 
 ### 1. **Creating New Blocks/Items** → `src/main/java/.../content/`
 
-This is where you **register new game objects**. Currently we have:
+You register new game objects in content. Currently we have:
 - `NeuralNodeBlock.java` - A neural network node block
 - `NeuralConnectionBlock.java` - A block representing connections between nodes
 - `RegistryObjects.java` - This is where ALL blocks/items get registered with Minecraft
@@ -34,7 +28,7 @@ This is where you **register new game objects**. Currently we have:
 
 ### 2. **Event Handlers** → `src/main/java/.../event/`
 
-This handles **"when X happens, do Y"** logic. Currently:
+Currently:
 - `PlayerJoinEventHandler.java` - When a player joins, give them neural blocks for testing
 
 **To add a new event:** Create a handler class here and register it in `NeuralFighterMod.java`.
@@ -43,16 +37,18 @@ This handles **"when X happens, do Y"** logic. Currently:
 
 ### 3. **Mixins** → `src/main/java/.../mixin/`
 
-Advanced stuff. Mixins let you **modify Minecraft's base code** without touching it directly. You probably won't need to touch this unless you need to change core Minecraft behavior.
+Not too important. It's there to modify the Minecraft base code without touching it. Event handlers should mostly be enough. (Event Handlers are Fabric's nicely packaged API, mixins are lower level.)
 
 ---
 
 ### 4. **Visualization** → `src/main/java/.../visualization/`
 
-**⚠️ Warning:** This code was AI-generated and I haven't fully understood it yet!
+Currently there are weird flames coming out of the nodes. This is an AI placeholder. Not sure how to visualize this yet.
+
+The logic is in:
 
 - `NeuralNetworkVisualizationManager.java` - Manages rendering of neural network visualizations
-- Nodes and edges get registered here, then rendered in 3D
+- Nodes and edges get registered to the manager in other parts of the code, then rendered by the manager.
 
 ---
 
@@ -75,80 +71,3 @@ resources/
 ├── fabric.mod.json          # Mod metadata (name, version, etc.)
 └── neuralfighter.mixins.json  # Mixin configuration
 ```
-
-### **What's the Difference?**
-
-| Folder | Purpose | Examples |
-|--------|---------|----------|
-| **`assets/`** | **Visual stuff** (textures, models, sounds) | Block textures, 3D models, how blocks look |
-| **`data/`** | **Game logic** (recipes, loot, tags) | What drops when broken, crafting recipes |
-
-**Easy way to remember:**
-- `assets` = What the player **sees**
-- `data` = How the game **behaves**
-
-**Example:**
-- `assets/blockstates/neural_node.json` → Tells Minecraft which 3D model to show for different "layer" states (layer 0-7)
-- `data/loot_tables/blocks/neural_node.json` → When you break a neural node block, you get 1 neural node item back
-
----
-
-## Project Layout Overview
-
-```
-src/main/java/com/fuchengwarren/neuralfighter/
-├── NeuralFighterMod.java       # Main entry point (starts everything)
-├── content/                    # NEW BLOCKS/ITEMS GO HERE
-│   ├── NeuralNodeBlock.java
-│   ├── NeuralConnectionBlock.java
-│   └── RegistryObjects.java    # Register all your stuff here
-├── event/                      # EVENT HANDLERS GO HERE
-│   └── PlayerJoinEventHandler.java
-├── mixin/                      # Advanced Minecraft code modifications
-└── visualization/              # Neural network rendering (AI-generated)
-    └── NeuralNetworkVisualizationManager.java
-```
-
----
-
-## Common Tasks
-
-### **I want to add a new block**
-
-1. Create `MyNewBlock.java` in `content/`
-2. Register it in `RegistryObjects.java`
-3. Add blockstate JSON in `resources/assets/neuralfighter/blockstates/`
-4. Add loot table JSON in `resources/data/neuralfighter/loot_tables/blocks/`
-
-### **I want to handle an event**
-
-1. Create `MyEventHandler.java` in `event/`
-2. Register it in `NeuralFighterMod.onInitialize()`
-
-### **I want to test my changes**
-
-```bash
-make build
-make run-client
-```
-
----
-
-## Why Fabric?
-
-Fabric is a **lightweight, fast modding framework** that's great for:
-- Quick prototyping
-- Modern Minecraft versions
-- Clean, organized code structure
-
-It's easier than Forge for small/medium mods like this one.
-
----
-
-## Need Help?
-
-- Check out `docs/` for more detailed documentation
-- Read the [Fabric Wiki](https://fabricmc.net/wiki/)
-- Ask me! (Warren)
-
-Happy modding! 🎮
