@@ -2,6 +2,7 @@ package com.fuchengwarren.neuralfighter;
 
 import com.fuchengwarren.neuralfighter.content.NeuralDisplayBlockEntity;
 import com.fuchengwarren.neuralfighter.content.RegistryObjects;
+import com.fuchengwarren.neuralfighter.event.PlayerJoinEventHandler;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -23,6 +24,7 @@ public class NeuralFighterMod implements ModInitializer {
 	public void onInitialize() {
 		RegistryObjects.register();
 		registerCommands();
+		PlayerJoinEventHandler.register();
 		LOGGER.info("Neural Fighter mod initialized.");
 	}
 
