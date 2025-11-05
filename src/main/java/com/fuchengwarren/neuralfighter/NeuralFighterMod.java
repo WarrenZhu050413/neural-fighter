@@ -1,9 +1,15 @@
 package com.fuchengwarren.neuralfighter;
 
+import com.fuchengwarren.neuralfighter.content.NeuralDisplayBlockEntity;
+import com.fuchengwarren.neuralfighter.content.RegistryObjects;
 import net.fabricmc.api.ModInitializer;
-
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import static net.minecraft.server.command.CommandManager.literal;
 
 public class NeuralFighterMod implements ModInitializer {
 	public static final String MOD_ID = "neuralfighter";
@@ -15,10 +21,33 @@ public class NeuralFighterMod implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		// This code runs as soon as Minecraft is in a mod-load-ready state.
-		// However, some things (like resources) may still be uninitialized.
-		// Proceed with mild caution.
-
+		RegistryObjects.register();
+		registerCommands();
 		LOGGER.info("Neural Fighter mod initialized.");
 	}
+
+    private void registerCommands() {
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
+            dispatcher.register(literal("neuralfighter")
+                .then(literal("demo_graph")
+                    .executes(ctx -> {
+                        var source = ctx.getSource();
+                        World w = source.getWorld();
+                        BlockPos ppos = BlockPos.ofFloored(source.getPosition());
+                        NeuralDisplayBlockEntity target = null;
+                        for (BlockPos bp : BlockPos.iterateOutwards(ppos, 8, 8, 8)) {
+                            var be = w.getBlockEntity(bp);
+                            if (be instanceof NeuralDisplayBlockEntity nde) { target = nde; break; }
+                        }
+                        if (target != null) {
+                            target.setDemoGraph(8, w.getTime());
+                            ctx.getSource().sendFeedback(() -> net.minecraft.text.Text.literal("Graph set on nearest Neural Display."), false);
+                        } else {
+                            ctx.getSource().sendFeedback(() -> net.minecraft.text.Text.literal("Place a Neural Display nearby first."), false);
+                        }
+                        return 1;
+                    }))
+            );
+        });
+    }
 }
