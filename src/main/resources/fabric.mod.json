@@ -7,9 +7,9 @@
 	"authors": [
 		"Fucheng Warren Zhu"
 	],
-	"contact": {
-		"sources": "https://github.com/fuchengwarren/neural-fighter"
-	},
+    "contact": {
+        "sources": "https://github.com/WarrenZhu050413/neural-fighter"
+    },
 	"license": "CC0-1.0",
 	"icon": "assets/neuralfighter/icon.png",
 	"environment": "*",
