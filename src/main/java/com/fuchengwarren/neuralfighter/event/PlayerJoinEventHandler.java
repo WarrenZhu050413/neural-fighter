@@ -1,7 +1,7 @@
 package com.fuchengwarren.neuralfighter.event;
 
-import com.fuchengwarren.neuralfighter.content.NeuralDisplayBlockEntity;
 import com.fuchengwarren.neuralfighter.content.RegistryObjects;
+import com.fuchengwarren.neuralfighter.visualization.NeuralDisplayManager;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
@@ -36,9 +36,7 @@ public final class PlayerJoinEventHandler {
             if (world.isAir(basePos)) {
                 BlockState state = RegistryObjects.NEURAL_DISPLAY_BLOCK.getDefaultState();
                 world.setBlockState(basePos, state);
-                if (world.getBlockEntity(basePos) instanceof NeuralDisplayBlockEntity nde) {
-                    nde.setDemoGraph(8, world.getTime());
-                }
+                NeuralDisplayManager.registerDisplay(world, basePos);
             }
         });
     }
