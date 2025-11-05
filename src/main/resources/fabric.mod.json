@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "neuralfighter",
+	"version": "${version}",
+	"name": "Neural Fighter",
+	"description": "Companion combat AI with in-game neural network visualization.",
+	"authors": [
+		"Fucheng Warren Zhu"
+	],
+	"contact": {
+		"sources": "https://github.com/fuchengwarren/neural-fighter"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/neuralfighter/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.fuchengwarren.neuralfighter.NeuralFighterMod"
+		],
+		"client": [
+			"com.fuchengwarren.neuralfighter.NeuralFighterModClient"
+		]
+	},
+	"mixins": [
+		"neuralfighter.mixins.json",
+		{
+			"config": "neuralfighter.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.17.3",
+		"minecraft": "~1.21.10",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
